@@ -6,6 +6,6 @@ export class WeatherFrontPage {
   }
 
   getParagraphText() {
-    return element(by.css('pm-root h1')).getText();
+    return element(by.css('wf-root h1')).getText();
   }
 }

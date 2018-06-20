@@ -1,6 +1,6 @@
 import { WeatherFrontPage } from './app.po';
 
-describe('apm App', () => {
+describe('wf App', () => {
   let page: WeatherFrontPage;
 
   beforeEach(() => {

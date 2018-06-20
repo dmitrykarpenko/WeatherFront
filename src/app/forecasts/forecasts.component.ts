@@ -1,11 +1,16 @@
 import { Component } from "@angular/core";
 
+import { IForecast } from "./iforecast";
+
 @Component({
     selector: "wf-forecasts",
     templateUrl: "./forecasts.component.html"
 })
 export class Forecasts {
     title: string = "Forecast list";
+    iconWidth: number = 50;
+    filter: string = "";
+    // TODO: use IForecast
     forecasts: any[] = [
         {
             "dt": 1529485200,

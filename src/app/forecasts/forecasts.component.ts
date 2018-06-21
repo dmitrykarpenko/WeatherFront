@@ -1,27 +1,83 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { IForecast } from "./iforecast";
+import { IForecast, IWeather } from "./iforecast";
 import { ForecastService } from "./forecast.service";
 
 @Component({
     selector: "wf-forecasts",
-    templateUrl: "./forecasts.component.html"
+    templateUrl: "./forecasts.component.html",
+    styleUrls: ["./forecasts.component.css"]
 })
-export class Forecasts implements OnInit
+export class ForecastsComponent implements OnInit
     // implements IForecasts
 {
-    title: string = "Forecast list";
-    iconWidth: number = 50;
-    filter: string = "";
-    // TODO: use IForecast
-    forecasts: IForecast[] = [];
-    
     constructor(
-        private _forecastService: ForecastService) {
+            private _forecastService: ForecastService,
+            private _activatedRoute: ActivatedRoute,
+            private _cdRef: ChangeDetectorRef) {
+        // _cdRef.detectChanges();
     }
 
+    title: string = "Forecast list";
+    iconWidth: number = 50;
+
+    _apiKey: string = "...a5d907afeaee540deb6ad3a5163";
+    get apiKey(): string {
+        return this._apiKey;
+    }
+    set apiKey(value: string) {
+        this._apiKey = value;
+        this.loadForecasts();
+    }
+
+    _filter: string = "";
+    get filter(): string {
+        return this._filter;
+    }
+    set filter(value: string) {
+        this._filter = value;
+        this.filteredForecasts = this.forecasts
+            ? this.performFilter(this.filter)
+            : this.forecasts;
+    }
+
+    forecasts: IForecast[] = [];
+    filteredForecasts: IForecast[] = [];
+
+    error: any;
+
     ngOnInit(): void {
-        this.forecasts = this._forecastService.getForecasts();
+        this.loadForecasts();
+        this._activatedRoute.params.subscribe(
+            (params: Params) => {
+                let key = params['apiKey'];
+                if (key)
+                    this._apiKey = key;
+            });
+    }
+
+    loadForecasts(): void {
+        this._forecastService.getForecasts(this.apiKey)
+        .subscribe(
+            forecasts => {
+                this.forecasts = forecasts;
+                this.filteredForecasts = forecasts;
+            },
+            error => this.error = error);
+    }
+
+    performFilter(currentFilter: string): IForecast[] {
+        currentFilter = currentFilter.toLocaleLowerCase();
+        return this.forecasts.filter(
+            (f: IForecast) =>
+                f.weather
+                    .filter(
+                        (w: IWeather) =>
+                            w.description
+                                .toLocaleLowerCase()
+                                .indexOf(currentFilter) != -1)
+                    .length > 0);
     }
 
     getDate(unix_timestamp: number) : string

@@ -3,19 +3,23 @@
         {{ title }}
     </div>
     <div class="panel-body">
-        <div class="row">
-            <div class="col-md-2">Filter by:</div>
-            <div class="col-md-4">
+        <div class="row settings">
+            <div class="col-md-1">Filter by:</div>
+            <div class="col-md-3">
                 <input type="text" [(ngModel)]='filter' />
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Filtered by: {{ filter }}</h3>
+            <div class="col-md-2">OpenWeatherMap API key:</div>
+            <div class="col-md-3">
+                <input type="text" [(ngModel)]='apiKey' />
             </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+        <div class="row"></div>
+        <div class="row">
             <div class="table-responsive col-md-12">
                 <table class="table"
-                       *ngIf="forecasts && forecasts.length">
+                       *ngIf="filteredForecasts && filteredForecasts.length">
                     <thead>
                         <th>
                             <button class="btn btn-primary">
@@ -23,10 +27,11 @@
                             </button>
                         </th>
                         <th>Date</th>
+                        <th>Description</th>
                         <th>Temperature</th>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let forecast of forecasts">
+                        <tr *ngFor="let forecast of filteredForecasts">
                             <td>
                                 <img *ngIf="forecast.weather && forecast.weather.length && forecast.weather[0].icon" 
                                      src="http://openweathermap.org/img/w/{{ forecast.weather[0].icon }}.png"
@@ -36,6 +41,11 @@
                             </td>
                             <td>
                                 <p>{{ getDate(forecast.dt) }}</p>
+                            </td>
+                            <td>
+                                <p *ngIf="forecast.weather && forecast.weather.length && forecast.weather[0].description" >
+                                    {{ forecast.weather[0].description }}
+                                </p>
                             </td>
                             <td>
                                 <span>min: {{ forecast.temp.min }}</span>,

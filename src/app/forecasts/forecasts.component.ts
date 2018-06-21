@@ -28,7 +28,7 @@ export class ForecastsComponent implements OnInit
     }
     set apiKey(value: string) {
         this._apiKey = value;
-        this.loadForecasts();
+        this.load();
     }
 
     _filter: string = "";
@@ -48,16 +48,36 @@ export class ForecastsComponent implements OnInit
     error: any;
 
     ngOnInit(): void {
-        this.loadForecasts();
-        this._activatedRoute.params.subscribe(
-            (params: Params) => {
-                let key = params['apiKey'];
-                if (key)
-                    this._apiKey = key;
-            });
+        this.load();
+        this.assignApiKeyFormUrl();
     }
 
-    loadForecasts(): void {
+    private assignApiKeyFormUrl() : void
+    {
+        // this._activatedRoute.params.subscribe(
+        //     (params: Params) => {
+        //         let key = params['apiKey'];
+        //         if (key)
+        //             this._apiKey = key;
+        //     });
+
+        // TODO: assign _apiKey from route params
+        const url = window.location.href;
+        const urlParam = "apiKey=";
+        const urlParamIndex = url.indexOf(urlParam);
+        if (urlParamIndex >= 0) {
+            const apiKeyValue = url.substring(urlParamIndex + urlParam.length);
+            if (apiKeyValue)
+                this.apiKey = apiKeyValue;
+        }
+    }
+
+    update(): void {
+        this._filter = "";
+        this.load();
+    }
+
+    load(): void {
         this._forecastService.getForecasts(this.apiKey)
         .subscribe(
             forecasts => {

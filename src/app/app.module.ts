@@ -16,7 +16,9 @@ import { ForecastsComponent } from './forecasts/forecasts.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot([]),
+    RouterModule.forRoot([
+      // { path: "apiKeys/:apiKey", component: AppComponent }
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent]

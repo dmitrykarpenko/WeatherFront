@@ -22,7 +22,7 @@
                        *ngIf="filteredForecasts && filteredForecasts.length">
                     <thead>
                         <th>
-                            <button class="btn btn-primary">
+                            <button class="btn btn-primary" (click)='update()'>
                                 Update
                             </button>
                         </th>

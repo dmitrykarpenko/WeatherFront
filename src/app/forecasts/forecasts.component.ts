@@ -6,14 +6,18 @@ import { IForecast } from "./iforecast";
     selector: "wf-forecasts",
     templateUrl: "./forecasts.component.html"
 })
-export class Forecasts {
+export class Forecasts
+    // implements IForecasts
+{
     title: string = "Forecast list";
     iconWidth: number = 50;
     filter: string = "";
     // TODO: use IForecast
-    forecasts: any[] = [
+    forecasts: IForecast[] = [
         {
             "dt": 1529485200,
+            "pressure": 1018.42,
+            "humidity": 79,
             "temp": {
                 "day": 26.68,
                 "min": 18.55,
@@ -22,8 +26,6 @@ export class Forecasts {
                 "eve": 26.33,
                 "morn": 26.68
             },
-            "pressure": 1018.42,
-            "humidity": 79,
             "weather": [
                 {
                     "id": 800,

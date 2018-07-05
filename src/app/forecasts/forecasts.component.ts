@@ -13,9 +13,9 @@ export class ForecastsComponent implements OnInit
     // implements IForecasts
 {
     constructor(
-            private _forecastService: ForecastService,
-            private _activatedRoute: ActivatedRoute,
-            private _cdRef: ChangeDetectorRef) {
+        private _forecastService: ForecastService,
+        private _activatedRoute: ActivatedRoute,
+        private _cdRef: ChangeDetectorRef) {
         // _cdRef.detectChanges();
     }
 
@@ -79,12 +79,12 @@ export class ForecastsComponent implements OnInit
 
     load(): void {
         this._forecastService.getForecasts(this.apiKey)
-        .subscribe(
-            forecasts => {
-                this.forecasts = forecasts;
-                this.filteredForecasts = forecasts;
-            },
-            error => this.error = error);
+            .subscribe(
+                forecasts => {
+                    this.forecasts = forecasts;
+                    this.filteredForecasts = forecasts;
+                },
+                error => this.error = error);
     }
 
     performFilter(currentFilter: string): IForecast[] {
